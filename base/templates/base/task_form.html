@@ -1,0 +1,26 @@
+{% extends "base/main.html" %}
+{% block content %}
+<div class="header-bar">
+    <a href="{% url "tasks" %}">&#8592; Back</a>
+</div>
+    <div class="dropdown">
+        <label for="periority">Periority</label>
+        {{form.priority}}
+    </div>
+<div class="card-body">
+    <form method = "POST" action ="">
+        {% csrf_token %}
+        {% comment %} {{form.as_p}} {% endcomment %}
+        <label for="title">Title</label>
+        {{form.title}}
+        <label for="discription">Discription</label>
+        {{form.discription}}
+        <label for="due_date">Due Date (YYYY-MM-DD)</label>
+        {{form.due_date}}
+    
+        <label for="complete">Complete</label>
+        {{form.complete}}
+        <input class="button" type = "submit" value="Submit">
+    </form>
+</div>
+{% endblock content %}

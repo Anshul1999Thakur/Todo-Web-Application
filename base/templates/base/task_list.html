@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>List View</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+  </head>
+  <style>
+    .gradient-custom-2 {
+      /* fallback for old browsers */
+      background: #7e40f6;
+
+      /* Chrome 10-25, Safari 5.1-6 */
+      background: -webkit-linear-gradient(
+        to right,
+        rgba(126, 64, 246, 1),
+        rgba(80, 139, 252, 1)
+      );
+
+      /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      background: linear-gradient(
+        to right,
+        rgba(126, 64, 246, 1),
+        rgba(80, 139, 252, 1)
+      );
+    }
+
+    .mask-custom {
+      background: rgba(24, 24, 16, 0.2);
+      border-radius: 2em;
+      backdrop-filter: blur(25px);
+      border: 2px solid rgba(255, 255, 255, 0.05);
+      background-clip: padding-box;
+      box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+    }
+    a:link {
+      color: white;
+      background-color: transparent;
+      text-decoration: none;
+    }
+  </style>
+  <body>
+    <section class="vh-100 gradient-custom-2">
+      <nav class="navbar navbar-light" style="background-color: #7c4dff;">
+        <div class="container-fluid">
+          <a class="navbar-brand">TODO</a>
+          <form class="d-flex">
+            <input class="form-control me-2" type="text" name = "search-area" value = '{{search_input}}'>
+            <input class="btn btn-success" type = "submit" value = "Search">
+          </form>
+        </div>
+      </nav>
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-md-12 col-xl-10">
+            <div class="card mask-custom">
+              <div class="card-body p-4 text-white">
+                <div class="text-center pt-3 pb-2">
+                  <img
+                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-todo-list/check1.webp"
+                    alt="Check"
+                    width="60"
+                  />
+                  <h2 class="my-4">Task List</h2>
+                </div>
+
+                <table class="table text-white mb-0">
+                  <thead>
+                    <tr>
+                      <th scope="col">Task</th>
+                      <th scope="col">Priority</th>
+                      <th scope="col">Due Date</th>
+                      <th scope="col">Complete Or Not</th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                          {% for task in tasks %}
+                            <tr class="fw-normal">
+                              <td class="align-middle">
+                                <div class="task-items-wrapper">
+                                  <div class="task-wrapper">
+                                    {% if task.complete %}
+                                      <div class="task-title">
+                                        <div class="task-complete-icon"></div>
+                                          {{task.title}}
+                                      </div>
+                                    {% else %}
+                                      <div class="task-title">
+                                        <div class="task-incomplete-icon"></div>
+                                          {{task.title}}
+                                      </div>  
+                                    {% endif %}
+                                  </div>
+                                </div>
+                              </td>
+                              <td class="align-middle">
+                                <h6 class="mb-0">
+                                  {% if task.priority == "Medium" %}
+                                    <span class="badge bg-success">{{task.priority}}</span>
+                                  {% elif task.priority == "Low" %}
+                                    <span class="badge bg-warning">{{task.priority}}</span>
+                                  {% else %}
+                                    <span class="badge bg-danger">{{task.priority}}</span>
+                                  {% endif %}
+                                </h6>
+                              </td>
+                              <td class="align-middle">
+                                {{task.due_date}}
+                              </td>
+                              <td class="align-middle">
+                                {% if task.complete %}
+                                    <a href="#!" data-mdb-toggle="tooltip" title="Complete"
+                                    ><i class="fas fa-check fa-xl me-3" style="color: #007E33;"></i
+                                      ></a>
+                                  {% else %}
+                                    <a href="#!" data-mdb-toggle="tooltip" title="Not Complete"
+                                    ><i class="fa-solid fa-xmark fa-xl me-3" style="color: #e72323;"></i></a>
+                                  {% endif %}
+                              </td>
+                              <td class="align-middle">
+                                <button type="button" class="me-3">
+                                  <a href="{% url 'task-update' task.id %}"><i class="fa-solid fa-pen-to-square" style="color: #2d5eb4;"></i></a></button>
+                                <a href="{% url 'task-delete' task.id %}" data-mdb-toggle="tooltip" title="Remove"
+                                  ><i class="fas fa-trash-alt fa-lg text-warning"></i
+                                ></a>
+                              </td>
+                            </tr>
+                          {% endfor %}
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
